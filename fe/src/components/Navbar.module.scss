@@ -1,0 +1,131 @@
+@use '@/styles/globals' as *;
+
+.nav {
+  background: $white;
+  border-bottom: 1px solid $gray-200;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+
+  @media (min-width: 640px) { padding: 0 1.5rem; }
+  @media (min-width: 1024px) { padding: 0 2rem; }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: $orange-600;
+
+  svg { width: 24px; height: 24px; }
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-600;
+  transition: color .15s;
+
+  &:hover { color: $gray-900; }
+
+  &.active { color: $orange-600; }
+}
+
+.cartBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: $gray-600;
+  transition: color .15s;
+
+  &:hover { color: $gray-900; }
+
+  svg { width: 20px; height: 20px; }
+}
+
+.cartBadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: $orange-500;
+  color: $white;
+  font-size: 0.625rem;
+  width: 18px;
+  height: 18px;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.loginBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: $orange-500;
+  color: $white;
+  padding: 8px 16px;
+  border-radius: $radius-lg;
+  transition: background .15s;
+
+  &:hover { background: $orange-600; }
+
+  svg { width: 16px; height: 16px; }
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userName {
+  font-size: 0.875rem;
+  color: $gray-600;
+}
+
+.logoutBtn {
+  color: $gray-400;
+  transition: color .15s;
+  display: flex;
+  align-items: center;
+
+  &:hover { color: $gray-600; }
+
+  svg { width: 16px; height: 16px; }
+}
+
+.kitchenLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-600;
+  transition: color .15s;
+
+  &:hover { color: $gray-900; }
+
+  svg { width: 16px; height: 16px; }
+}

@@ -1,0 +1,238 @@
+@use '@/styles/globals' as *;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, .5);
+}
+
+.modal {
+  background: $white;
+  border-radius: $radius-2xl;
+  max-width: 512px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: fadeIn .2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.imageWrap {
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 224px;
+  object-fit: cover;
+  border-radius: $radius-2xl $radius-2xl 0 0;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: $white;
+  border-radius: $radius-full;
+  padding: 4px;
+  box-shadow: $shadow-sm;
+  display: flex;
+  align-items: center;
+  transition: background .15s;
+
+  svg { width: 20px; height: 20px; }
+
+  &:hover { background: $gray-100; }
+}
+
+.body {
+  padding: 1.5rem;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.price {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $orange-600;
+}
+
+.description {
+  color: $gray-500;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: $gray-500;
+  margin-bottom: 1rem;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    svg { width: 12px; height: 12px; }
+
+    &.veg  { color: $green-600; }
+    &.vegan { color: $green-700; }
+    &.gf   { color: $yellow-600; }
+  }
+}
+
+.section {
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: $gray-700;
+  margin-bottom: 8px;
+}
+
+.sizeGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.sizeBtn {
+  flex: 1;
+  padding: 8px;
+  font-size: 0.75rem;
+  border-radius: $radius-lg;
+  border: 1px solid $gray-200;
+  font-weight: 500;
+  color: $gray-600;
+  transition: all .15s;
+
+  &.active {
+    border-color: $orange-500;
+    background: $orange-50;
+    color: $orange-600;
+  }
+
+  &:hover:not(.active) { border-color: $gray-300; }
+}
+
+.addonRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: $radius-lg;
+  border: 1px solid $gray-100;
+  cursor: pointer;
+  transition: background .15s;
+
+  &:hover { background: $gray-50; }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    input[type="checkbox"] { accent-color: $orange-500; }
+  }
+
+  .addonPrice {
+    font-size: 0.75rem;
+    color: $orange-600;
+    font-weight: 500;
+  }
+}
+
+.textarea {
+  width: 100%;
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  padding: 8px;
+  font-size: 0.875rem;
+  resize: none;
+  outline: none;
+  transition: box-shadow .15s;
+
+  &:focus { box-shadow: 0 0 0 2px rgba($orange-500, .3); }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.qtyControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  padding: 4px;
+}
+
+.qtyBtn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-md;
+  transition: background .15s;
+
+  svg { width: 12px; height: 12px; }
+
+  &:hover { background: $gray-100; }
+}
+
+.qtyNum {
+  width: 24px;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.addBtn {
+  flex: 1;
+  background: $orange-500;
+  color: $white;
+  padding: 12px;
+  border-radius: $radius-xl;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background .15s;
+
+  &:hover:not(:disabled) { background: $orange-600; }
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,62 @@
+@use '@/styles/globals' as *;
+
+.page    { min-height: 100vh; background: $gray-50; }
+
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin-bottom: 1.5rem;
+}
+
+.skeletons { display: flex; flex-direction: column; gap: 12px; }
+
+.skeletonItem { height: 96px; background: $white; border-radius: $radius-xl; }
+
+.empty {
+  text-align: center;
+  padding: 5rem 0;
+  color: $gray-400;
+  font-size: 0.875rem;
+
+  p { margin-bottom: 1rem; }
+
+  a { color: $orange-500; &:hover { text-decoration: underline; } }
+}
+
+.list { display: flex; flex-direction: column; gap: 12px; }
+
+.orderCard {
+  display: block;
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $gray-100;
+  padding: 1rem;
+  transition: box-shadow .15s;
+
+  &:hover { box-shadow: $shadow-md; }
+}
+
+.cardInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.orderId   { font-weight: 500; color: $gray-900; font-size: 0.875rem; }
+.orderDate { font-size: 0.75rem; color: $gray-400; margin-top: 2px; }
+.orderAmt  { font-size: 0.875rem; font-weight: 500; color: $orange-600; margin-top: 4px; }
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg { width: 16px; height: 16px; color: $gray-400; }
+}

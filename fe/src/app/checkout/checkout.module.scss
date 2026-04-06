@@ -1,0 +1,135 @@
+@use '@/styles/globals' as *;
+
+.page { min-height: 100vh; background: $gray-50; }
+
+.content {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin-bottom: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }
+}
+
+.panel {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $gray-100;
+  padding: 1.5rem;
+}
+
+.panelTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: $gray-900;
+  margin-bottom: 1rem;
+
+  svg { width: 20px; height: 20px; color: $orange-500; }
+}
+
+.fields { display: flex; flex-direction: column; gap: 12px; }
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field { display: flex; flex-direction: column; gap: 4px; }
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $gray-700;
+}
+
+.input {
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: box-shadow .15s;
+
+  &:focus { box-shadow: 0 0 0 2px rgba($orange-500, .3); }
+}
+
+.failToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: $gray-500;
+  cursor: pointer;
+
+  input { accent-color: $red-500; }
+}
+
+.summaryItems {
+  max-height: 12rem;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: $gray-600;
+}
+
+.divider { border-top: 1px solid $gray-200; padding-top: 12px; margin-top: 4px; }
+
+.summaryRows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+.summaryRow { display: flex; justify-content: space-between; color: $gray-600; }
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  color: $gray-900;
+  font-size: 1rem;
+}
+
+.payBtn {
+  width: 100%;
+  background: $orange-500;
+  color: $white;
+  padding: 1rem;
+  border-radius: $radius-xl;
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background .15s;
+
+  svg { width: 16px; height: 16px; }
+
+  &:hover:not(:disabled) { background: $orange-600; }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}

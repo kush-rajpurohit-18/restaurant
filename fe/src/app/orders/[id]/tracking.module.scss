@@ -1,0 +1,164 @@
+@use '@/styles/globals' as *;
+
+.page    { min-height: 100vh; background: $gray-50; }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid $orange-500;
+  border-top-color: transparent;
+  border-radius: $radius-full;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $gray-900;
+}
+
+.panel {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $gray-100;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.panelTitle {
+  font-weight: 600;
+  color: $gray-900;
+  margin-bottom: 1rem;
+}
+
+// Progress tracker
+.progressWrap { position: relative; }
+
+.progressTrack {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: $gray-200;
+  border-radius: 1px;
+}
+
+.progressFill {
+  height: 100%;
+  background: $orange-500;
+  border-radius: 1px;
+  transition: width 1s ease;
+}
+
+.steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.step { display: flex; flex-direction: column; align-items: center; }
+
+.stepDot {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: all .3s;
+
+  &.done { background: $orange-500; svg { color: $white; } }
+  &.pending { background: $gray-200; svg { color: $gray-400; } }
+
+  svg { width: 20px; height: 20px; }
+}
+
+.stepLabel {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+
+  &.current  { color: $orange-600; }
+  &.done     { color: $gray-700; }
+  &.pending  { color: $gray-400; }
+}
+
+// Order items
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  padding: 6px 0;
+
+  & + & { border-top: 1px solid $gray-50; }
+}
+
+.itemLeft {}
+.itemName   { font-weight: 500; color: $gray-900; }
+.itemQty    { color: $gray-400; margin-left: 8px; }
+.itemSize   { font-size: 0.75rem; color: $gray-400; margin-left: 8px; }
+.itemAddons { font-size: 0.75rem; color: $gray-400; margin-top: 2px; }
+.itemNote   { font-size: 0.75rem; color: $gray-400; font-style: italic; margin-top: 2px; }
+.itemPrice  { font-weight: 500; color: $gray-900; white-space: nowrap; }
+
+.totals {
+  border-top: 1px solid $gray-200;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+.totalRow { display: flex; justify-content: space-between; color: $gray-500; }
+.totalFinal { display: flex; justify-content: space-between; font-weight: 700; color: $gray-900; }
+
+// Timeline
+.timeline { display: flex; flex-direction: column; gap: 12px; }
+
+.timelineEntry {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.875rem;
+}
+
+.timelineDot {
+  width: 8px;
+  height: 8px;
+  border-radius: $radius-full;
+  background: $orange-500;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.timelineStatus { font-weight: 500; color: $gray-900; }
+.timelineTime   { font-size: 0.75rem; color: $gray-400; margin-left: 8px; }
+.timelineNote   { font-size: 0.75rem; color: $gray-400; margin-top: 2px; }

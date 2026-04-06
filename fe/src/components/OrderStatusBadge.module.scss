@@ -1,0 +1,50 @@
+@use '@/styles/globals' as *;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  flex-shrink: 0;
+}
+
+.received {
+  background: $blue-100;
+  color: $blue-700;
+  .dot { background: $blue-500; }
+}
+
+.preparing {
+  background: $yellow-100;
+  color: $yellow-700;
+  .dot {
+    background: $yellow-500;
+    animation: pulse 2s ease-in-out infinite;
+  }
+}
+
+.ready {
+  background: $green-100;
+  color: $green-700;
+  .dot { background: $green-500; }
+}
+
+.completed {
+  background: $gray-100;
+  color: $gray-600;
+  .dot { background: $gray-400; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}

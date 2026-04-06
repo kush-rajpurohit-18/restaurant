@@ -1,0 +1,181 @@
+@use '@/styles/globals' as *;
+
+.page { min-height: 100vh; background: $gray-50; }
+
+.content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+
+  @media (min-width: 640px)  { padding: 2rem 1.5rem; }
+  @media (min-width: 1024px) { padding: 2rem 2rem; }
+}
+
+.searchRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.searchWrap {
+  flex: 1;
+  position: relative;
+
+  svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: $gray-400;
+  }
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 1rem 10px 2.5rem;
+  border: 1px solid $gray-200;
+  border-radius: $radius-xl;
+  font-size: 0.875rem;
+  outline: none;
+  transition: box-shadow .15s;
+
+  &:focus { box-shadow: 0 0 0 2px rgba($orange-500, .3); }
+}
+
+.filterToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 1rem;
+  border-radius: $radius-xl;
+  border: 1px solid $gray-200;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: $white;
+  color: $gray-600;
+  transition: all .15s;
+
+  svg { width: 16px; height: 16px; }
+
+  &.active {
+    background: $orange-500;
+    color: $white;
+    border-color: $orange-500;
+  }
+}
+
+.filterPanel {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $gray-200;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.filterSection h3 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $gray-700;
+  margin-bottom: 8px;
+}
+
+.checkboxGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  input[type="checkbox"] { accent-color: $orange-500; }
+}
+
+.rangeGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  input[type="range"] { accent-color: $orange-500; }
+}
+
+.categoryBar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.categoryBtn {
+  white-space: nowrap;
+  padding: 8px 16px;
+  border-radius: $radius-full;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: $white;
+  color: $gray-600;
+  border: 1px solid $gray-200;
+  transition: all .15s;
+
+  &:hover { background: $gray-50; }
+
+  &.active {
+    background: $orange-500;
+    color: $white;
+    border-color: $orange-500;
+  }
+}
+
+.empty {
+  text-align: center;
+  padding: 5rem 0;
+  color: $gray-400;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 768px)  { grid-template-columns: repeat(3, 1fr); }
+  @media (min-width: 1024px) { grid-template-columns: repeat(4, 1fr); }
+}
+
+.skeletonCard {
+  background: $white;
+  border-radius: $radius-xl;
+  border: 1px solid $gray-100;
+  overflow: hidden;
+}
+
+.skeletonImg   { height: 192px; }
+.skeletonBody  { padding: 1rem; display: flex; flex-direction: column; gap: 8px; }
+.skeletonLine  { height: 14px; border-radius: 4px; }
+.skeletonShort { width: 75%; }
+
+.sections { display: flex; flex-direction: column; gap: 2.5rem; }
+
+.section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $gray-900;
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 768px)  { grid-template-columns: repeat(3, 1fr); }
+  @media (min-width: 1024px) { grid-template-columns: repeat(4, 1fr); }
+}

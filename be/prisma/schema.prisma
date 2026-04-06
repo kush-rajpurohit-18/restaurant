@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("CUSTOMER")
+  orders       Order[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  slug      String     @unique
+  sortOrder Int        @default(0)
+  menuItems MenuItem[]
+}
+
+model MenuItem {
+  id              String      @id @default(uuid())
+  name            String
+  description     String
+  price           Float
+  imageUrl        String      @default("")
+  categoryId      String
+  category        Category    @relation(fields: [categoryId], references: [id])
+  preparationTime Int         @default(15)
+  isAvailable     Boolean     @default(true)
+  isVegetarian    Boolean     @default(false)
+  isVegan         Boolean     @default(false)
+  isGlutenFree    Boolean     @default(false)
+  stock           Int?
+  addOns          AddOn[]
+  orderItems      OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model AddOn {
+  id              String          @id @default(uuid())
+  name            String
+  price           Float
+  menuItemId      String
+  menuItem        MenuItem        @relation(fields: [menuItemId], references: [id])
+  orderItemAddOns OrderItemAddOn[]
+}
+
+model Order {
+  id            String          @id @default(uuid())
+  customerId    String
+  customer      User            @relation(fields: [customerId], references: [id])
+  items         OrderItem[]
+  status        String          @default("RECEIVED")
+  subtotal      Float
+  taxAmount     Float
+  totalAmount   Float
+  paymentStatus String          @default("PENDING")
+  paymentRef    String?
+  statusHistory StatusHistory[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model OrderItem {
+  id                  String          @id @default(uuid())
+  orderId             String
+  order               Order           @relation(fields: [orderId], references: [id])
+  menuItemId          String
+  menuItem            MenuItem        @relation(fields: [menuItemId], references: [id])
+  quantity            Int
+  unitPrice           Float
+  size                String?
+  specialInstructions String?
+  addOns              OrderItemAddOn[]
+}
+
+model OrderItemAddOn {
+  id          String    @id @default(uuid())
+  orderItemId String
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  addOnId     String
+  addOn       AddOn     @relation(fields: [addOnId], references: [id])
+  price       Float
+}
+
+model StatusHistory {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  status    String
+  timestamp DateTime @default(now())
+  note      String?
+}
