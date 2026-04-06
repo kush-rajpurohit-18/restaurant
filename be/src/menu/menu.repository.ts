@@ -1,86 +1,96 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { v4 as uuidv4 } from 'uuid';
+import { DataStore, MenuItem } from '../store/data.store';
 import { MenuFilterDto } from './dto/menu-filter.dto';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
+
 @Injectable()
 export class MenuRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly store: DataStore) {}
+
+  private withCategory(item: MenuItem) {
+    return { ...item, category: this.store.categories.find(c => c.id === item.categoryId)! };
+  }
 
   findAll(filters: MenuFilterDto) {
-    const where: any = {};
+    let items = this.store.menuItems.map(i => this.withCategory(i));
 
     if (filters.search) {
-      where.OR = [
-        { name: { contains: filters.search } },
-        { description: { contains: filters.search } },
-      ];
+      const q = filters.search.toLowerCase();
+      items = items.filter(i =>
+        i.name.toLowerCase().includes(q) || i.description.toLowerCase().includes(q),
+      );
     }
     if (filters.categorySlug) {
-      where.category = { slug: filters.categorySlug };
+      items = items.filter(i => i.category?.slug === filters.categorySlug);
     }
     if (filters.minPrice !== undefined) {
-      where.price = { ...((where.price as any) || {}), gte: Number(filters.minPrice) };
+      items = items.filter(i => i.price >= Number(filters.minPrice));
     }
     if (filters.maxPrice !== undefined) {
-      where.price = { ...((where.price as any) || {}), lte: Number(filters.maxPrice) };
+      items = items.filter(i => i.price <= Number(filters.maxPrice));
     }
-    if (filters.isVegetarian === 'true') where.isVegetarian = true;
-    if (filters.isVegan === 'true') where.isVegan = true;
-    if (filters.isGlutenFree === 'true') where.isGlutenFree = true;
-    if (filters.isAvailable === 'true') where.isAvailable = true;
+    if (filters.isVegetarian === 'true') items = items.filter(i => i.isVegetarian);
+    if (filters.isVegan === 'true') items = items.filter(i => i.isVegan);
+    if (filters.isGlutenFree === 'true') items = items.filter(i => i.isGlutenFree);
+    if (filters.isAvailable === 'true') items = items.filter(i => i.isAvailable);
 
-    return this.prisma.menuItem.findMany({
-      where,
-      include: { category: true, addOns: true },
-      orderBy: { category: { sortOrder: 'asc' } },
-    });
+    items.sort((a, b) => (a.category?.sortOrder ?? 0) - (b.category?.sortOrder ?? 0));
+    return Promise.resolve(items);
   }
 
   getCategories() {
-    return this.prisma.category.findMany({ orderBy: { sortOrder: 'asc' } });
+    const sorted = [...this.store.categories].sort((a, b) => a.sortOrder - b.sortOrder);
+    return Promise.resolve(sorted);
   }
 
   findById(id: string) {
-    return this.prisma.menuItem.findUnique({
-      where: { id },
-      include: { category: true, addOns: true },
-    });
+    const item = this.store.menuItems.find(i => i.id === id);
+    return Promise.resolve(item ? this.withCategory(item) : null);
   }
 
   create(dto: CreateMenuItemDto) {
     const { addOns, ...rest } = dto;
-    return this.prisma.menuItem.create({
-      data: {
-        ...rest,
-        addOns: addOns ? { create: addOns } : undefined,
-      },
-      include: { category: true, addOns: true },
-    });
+    const id = uuidv4();
+    const item: MenuItem = {
+      imageUrl: '',
+      preparationTime: 15,
+      isAvailable: true,
+      isVegetarian: false,
+      isVegan: false,
+      isGlutenFree: false,
+      stock: null,
+      ...rest,
+      id,
+      addOns: addOns?.map(a => ({ ...a, id: uuidv4(), menuItemId: id })) ?? [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.store.menuItems.push(item);
+    return Promise.resolve(this.withCategory(item));
   }
 
   update(id: string, dto: UpdateMenuItemDto) {
+    const idx = this.store.menuItems.findIndex(i => i.id === id);
+    if (idx === -1) return Promise.resolve(null);
     const { addOns, ...rest } = dto;
-    return this.prisma.menuItem.update({
-      where: { id },
-      data: rest,
-      include: { category: true, addOns: true },
-    });
+    this.store.menuItems[idx] = { ...this.store.menuItems[idx], ...rest, updatedAt: new Date() };
+    return Promise.resolve(this.withCategory(this.store.menuItems[idx]));
   }
 
   delete(id: string) {
-    return this.prisma.menuItem.delete({ where: { id } });
+    const idx = this.store.menuItems.findIndex(i => i.id === id);
+    if (idx === -1) return Promise.resolve(null);
+    const [deleted] = this.store.menuItems.splice(idx, 1);
+    return Promise.resolve(deleted);
   }
 
   async decrementStock(menuItemId: string, quantity: number) {
-    return this.prisma.$transaction(async (tx) => {
-      const item = await tx.menuItem.findUnique({ where: { id: menuItemId } });
-      if (!item || item.stock === null) return item;
-      if (item.stock < quantity) throw new Error(`Insufficient stock for item ${menuItemId}`);
-      return tx.menuItem.update({
-        where: { id: menuItemId },
-        data: { stock: item.stock - quantity },
-      });
-    });
+    const item = this.store.menuItems.find(i => i.id === menuItemId);
+    if (!item || item.stock === null) return item ?? null;
+    if (item.stock < quantity) throw new Error(`Insufficient stock for item ${menuItemId}`);
+    item.stock -= quantity;
+    return item;
   }
 }

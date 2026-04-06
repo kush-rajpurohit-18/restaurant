@@ -1,22 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { v4 as uuidv4 } from 'uuid';
+import { DataStore } from '../store/data.store';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly store: DataStore) {}
 
   findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
+    return Promise.resolve(this.store.users.find(u => u.email === email) ?? null);
   }
 
   findById(id: string) {
-    return this.prisma.user.findUnique({
-      where: { id },
-      select: { id: true, email: true, name: true, role: true },
-    });
+    const user = this.store.users.find(u => u.id === id);
+    if (!user) return Promise.resolve(null);
+    return Promise.resolve({ id: user.id, email: user.email, name: user.name, role: user.role });
   }
 
   create(data: { email: string; name: string; passwordHash: string; role: string }) {
-    return this.prisma.user.create({ data });
+    const user = { id: uuidv4(), ...data, createdAt: new Date(), updatedAt: new Date() };
+    this.store.users.push(user);
+    return Promise.resolve(user);
   }
 }
