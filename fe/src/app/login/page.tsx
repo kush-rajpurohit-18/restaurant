@@ -26,7 +26,11 @@ export default function LoginPage() {
       toast.success(isLogin ? 'Welcome back!' : 'Account created!');
       router.push(result.user.role === 'CUSTOMER' ? '/menu' : '/kitchen');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Authentication failed');
+      toast.error(
+        err.response?.data?.message ||
+        err.message ||
+        'Authentication failed. Check API/CORS configuration.'
+      );
     } finally {
       setIsLoading(false);
     }
