@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { publicEnv } from '@/config/publicEnv';
 import { SOCKET_EVENTS } from '@/constants/socketEvents';
 import { Order, OrderStatus } from '@/types';
 
@@ -14,7 +15,7 @@ let socketInstance: Socket | null = null;
 
 function getSocket(): Socket {
   if (!socketInstance) {
-    socketInstance = io(process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:3001', {
+    socketInstance = io(publicEnv.wsUrl, {
       transports: ['websocket'],
       autoConnect: true,
     });

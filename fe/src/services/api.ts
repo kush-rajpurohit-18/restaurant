@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { publicEnv } from '@/config/publicEnv';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
+  baseURL: publicEnv.apiUrl,
   headers: { 'Content-Type': 'application/json' },
 });
 
