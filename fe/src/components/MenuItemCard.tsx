@@ -9,6 +9,7 @@ import styles from './MenuItemCard.module.scss';
 
 export function MenuItemCard({ item }: { item: MenuItem }) {
   const [showModal, setShowModal] = useState(false);
+  const [imageBroken, setImageBroken] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
   
   const handleQuickAdd = (e: React.MouseEvent) => {
@@ -22,8 +23,8 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
     <>
       <div className={styles.card} onClick={() => setShowModal(true)}>
         <div className={styles.imageWrap}>
-          {item.imageUrl ? (
-            <img src={item.imageUrl} alt={item.name} className={styles.image} />
+          {item.imageUrl && !imageBroken ? (
+            <img src={item.imageUrl} alt={item.name} className={styles.image} onError={() => setImageBroken(true)} />
           ) : (
             <div className={styles.imagePlaceholder}>🍽</div>
           )}

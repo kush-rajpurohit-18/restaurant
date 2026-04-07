@@ -9,6 +9,10 @@ import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 export class MenuRepository {
   constructor(private readonly store: DataStore) {}
 
+  private buildPlaceholderImageUrl(name: string) {
+    return `https://placehold.co/1200x800/f5f5f5/6b7280?text=${encodeURIComponent(name)}`;
+  }
+
   private withCategory(item: MenuItem) {
     return { ...item, category: this.store.categories.find(c => c.id === item.categoryId)! };
   }
@@ -54,7 +58,7 @@ export class MenuRepository {
     const { addOns, ...rest } = dto;
     const id = uuidv4();
     const item: MenuItem = {
-      imageUrl: '',
+      imageUrl: this.buildPlaceholderImageUrl(rest.name),
       preparationTime: 15,
       isAvailable: true,
       isVegetarian: false,

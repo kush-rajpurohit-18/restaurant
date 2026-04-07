@@ -6,6 +6,10 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+function shouldRedirectToLogin(pathname: string) {
+  return pathname.startsWith('/checkout') || pathname.startsWith('/orders') || pathname.startsWith('/kitchen');
+}
+
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     assertPublicEnv('NEXT_PUBLIC_API_URL', publicEnv.apiUrl);
@@ -19,9 +23,16 @@ api.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error.response?.status === 401 && typeof window !== 'undefined') {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        if (shouldRedirectToLogin(window.location.pathname)) {
+          window.location.href = '/login';
+        }
+      }
     }
     return Promise.reject(error);
   }

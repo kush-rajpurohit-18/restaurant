@@ -12,6 +12,7 @@ export function MenuItemModal({ item, onClose }: { item: MenuItem; onClose: () =
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [size, setSize] = useState<'SMALL' | 'MEDIUM' | 'LARGE'>('MEDIUM');
   const [instructions, setInstructions] = useState('');
+  const [imageBroken, setImageBroken] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
 
   const previewPrice = getItemPrice({
@@ -37,7 +38,11 @@ export function MenuItemModal({ item, onClose }: { item: MenuItem; onClose: () =
     <div className={styles.backdrop} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.imageWrap}>
-          {item.imageUrl && <img src={item.imageUrl} alt={item.name} className={styles.image} />}
+          {item.imageUrl && !imageBroken ? (
+            <img src={item.imageUrl} alt={item.name} className={styles.image} onError={() => setImageBroken(true)} />
+          ) : (
+            <div className={styles.image} />
+          )}
           <button onClick={onClose} className={styles.closeBtn}><X /></button>
         </div>
         <div className={styles.body}>
