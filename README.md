@@ -20,7 +20,7 @@ npm install
 npm run dev
 ```
 
-Runs on [http://localhost:3000](http://localhost:3000)
+Runs on [[http://localhost:3000](https://restaurant-ochre-eight.vercel.app/)]([http://localhost:3000](https://restaurant-ochre-eight.vercel.app/))
 
 ### Backend (be/)
 
