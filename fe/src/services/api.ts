@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { assertPublicEnv, publicEnv } from '@/config/publicEnv';
+import { publicEnv } from '@/config/publicEnv';
 
 const api = axios.create({
-  baseURL: publicEnv.apiUrl || undefined,
+  baseURL: publicEnv.apiUrl,
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -12,7 +12,6 @@ function shouldRedirectToLogin(pathname: string) {
 
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
-    assertPublicEnv('NEXT_PUBLIC_API_URL', publicEnv.apiUrl);
     const token = localStorage.getItem('token');
     if (token) config.headers.Authorization = `Bearer ${token}`;
   }
