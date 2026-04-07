@@ -1,13 +1,14 @@
 import axios from 'axios';
-import { publicEnv } from '@/config/publicEnv';
+import { assertPublicEnv, publicEnv } from '@/config/publicEnv';
 
 const api = axios.create({
-  baseURL: publicEnv.apiUrl,
+  baseURL: publicEnv.apiUrl || undefined,
   headers: { 'Content-Type': 'application/json' },
 });
 
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
+    assertPublicEnv('NEXT_PUBLIC_API_URL', publicEnv.apiUrl);
     const token = localStorage.getItem('token');
     if (token) config.headers.Authorization = `Bearer ${token}`;
   }
